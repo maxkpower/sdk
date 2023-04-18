@@ -1,3 +1,9 @@
 {
-  "cSpell.words": ["bindgen", "Cdecl", "dylib", "Maybeable"]
+  "cSpell.words": [
+    "bindgen",
+    "Bitwarden",
+    "Cdecl",
+    "dylib",
+    "Maybeable"
+  ]
 }

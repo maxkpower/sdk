@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Bitwarden.SDK</RootNamespace>
+    <AssemblyName>Bitwarden.SDK</AssemblyName>
+  </PropertyGroup>
+
+  <Import Project="..\Bitwarden.SDK.Shared\Bitwarden.SDK.Shared.projitems" Label="Shared" Condition="Exists('..\Bitwarden.SDK.Shared\Bitwarden.SDK.Shared.projitems')" />
+</Project>

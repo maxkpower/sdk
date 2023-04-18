@@ -56,12 +56,13 @@ async function main() {
     inputData,
     lang: "csharp",
     rendererOptions: {
-      namespace: "Bit.Sdk",
+      namespace: "Bitwarden.SDK",
+      //framework: "SystemTextJson",
       "csharp-version": "6",
     },
   });
 
-  writeToFile("./languages/csharp/schemas.cs", csharp.lines);
+  writeToFile("./languages/dotnet/Bitwarden.SDK/schemas.cs", csharp.lines);
 }
 
 main();
