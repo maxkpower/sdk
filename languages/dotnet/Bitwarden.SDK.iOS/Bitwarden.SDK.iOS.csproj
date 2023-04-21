@@ -48,7 +48,7 @@
         <ObjcBindingCoreSource Include="Structs.cs" />
     </ItemGroup>
     <ItemGroup>
-      <NativeReference Include="..\..\..\target\aarch64-apple-ios-sim\debug\libbitwarden_c.a">
+      <NativeReference Include="..\..\..\target\x86_64-apple-ios\debug\libbitwarden_c.a">
         <Kind>Static</Kind>
         <SmartLink>False</SmartLink>
       </NativeReference>
