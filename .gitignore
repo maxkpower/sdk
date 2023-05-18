@@ -30,4 +30,5 @@ crates/bitwarden-napi/sdk-napi.*.node
 
 # Complied TypeScript client
 crates/bitwarden-napi/dist
+crates/bitwarden-uniffi/bindings
 languages/js/sdk-client/dist/

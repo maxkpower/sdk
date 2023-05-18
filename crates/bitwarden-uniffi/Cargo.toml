@@ -17,6 +17,7 @@ path = "uniffi-bindgen.rs"
 [dependencies]
 env_logger = "0.10.0"
 uniffi = "0.23.0"
+openssl = { version = "0.10", features = ["vendored"] }
 
 bitwarden = { path = "../bitwarden" }
 
