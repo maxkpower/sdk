@@ -51,6 +51,7 @@ chrono = { version = ">=0.4.26, <0.5", features = [
     "std",
 ], default-features = false }
 uniffi = { version = "=0.24.1", optional = true }
+rayon = ">=1.7.0, <2.0"
 
 # We don't use this directly (it's used by rand), but we need it here to enable WASM support
 getrandom = { version = ">=0.2.9", features = ["js"] }
