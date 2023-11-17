@@ -61,8 +61,11 @@ fn make_user_key(
     rng.fill(&mut user_key);
 
     let stretched_key = stretch_master_key(master_key)?;
-    let protected =
-        encrypt_aes256_hmac(&user_key, stretched_key.mac_key.unwrap(), stretched_key.key)?;
+    let protected = encrypt_aes256_hmac(
+        &user_key,
+        stretched_key.mac_key.unwrap(),
+        &stretched_key.key,
+    )?;
 
     let u: &[u8] = &user_key;
     Ok((UserKey::new(SymmetricCryptoKey::try_from(u)?), protected))
