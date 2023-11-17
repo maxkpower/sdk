@@ -4,7 +4,7 @@ use base64::Engine;
 use serde::{de::Visitor, Deserialize};
 
 use crate::{
-    crypto::{decrypt_aes256_hmac, SymmetricCryptoKey},
+    crypto::{decrypt_aes128_hmac, decrypt_aes256, decrypt_aes256_hmac, SymmetricCryptoKey},
     error::{CryptoError, EncStringParseError, Error, Result},
     util::BASE64_ENGINE,
 };
@@ -357,16 +357,29 @@ fn invalid_len_error(expected: usize) -> impl Fn(Vec<u8>) -> EncStringParseError
 impl LocateKey for EncString {}
 impl KeyEncryptable<EncString> for &[u8] {
     fn encrypt_with_key(self, key: &SymmetricCryptoKey) -> Result<EncString> {
-        super::encrypt_aes256_hmac(self, key.mac_key.ok_or(CryptoError::InvalidMac)?, key.key)
+        super::encrypt_aes256_hmac(self, key.mac_key.ok_or(CryptoError::InvalidMac)?, &key.key)
     }
 }
 
 impl KeyDecryptable<Vec<u8>> for EncString {
     fn decrypt_with_key(&self, key: &SymmetricCryptoKey) -> Result<Vec<u8>> {
         match self {
+            EncString::AesCbc256_B64 { iv, data } => {
+                let dec = decrypt_aes256(iv, data.clone(), &key.key)?;
+                Ok(dec)
+            }
+            EncString::AesCbc128_HmacSha256_B64 { iv, mac, data } => {
+                // TODO: SymmetricCryptoKey is designed to handle 32 byte keys only, but this variant uses a 16 byte key
+                // This means the key+mac are going to be parsed as a single 32 byte key, at the moment we split it manually
+                // When refactoring the key handling, this should be fixed.
+                let enc_key = key.key[0..16].into();
+                let mac_key = key.key[16..32].into();
+                let dec = decrypt_aes128_hmac(iv, mac, data.clone(), mac_key, enc_key)?;
+                Ok(dec)
+            }
             EncString::AesCbc256_HmacSha256_B64 { iv, mac, data } => {
                 let mac_key = key.mac_key.ok_or(CryptoError::InvalidMac)?;
-                let dec = decrypt_aes256_hmac(iv, mac, data.clone(), mac_key, key.key)?;
+                let dec = decrypt_aes256_hmac(iv, mac, data.clone(), &mac_key, &key.key)?;
                 Ok(dec)
             }
             _ => Err(CryptoError::InvalidKey.into()),
