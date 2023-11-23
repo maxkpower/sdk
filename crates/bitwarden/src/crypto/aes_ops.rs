@@ -106,7 +106,7 @@ fn encrypt_aes256_internal(
 ) -> ([u8; 16], Vec<u8>) {
     let mut iv = [0u8; 16];
     rng.fill_bytes(&mut iv);
-    let data = cbc::Encryptor::<aes::Aes256>::new(&key, &iv.into())
+    let data = cbc::Encryptor::<aes::Aes256>::new(key, &iv.into())
         .encrypt_padded_vec_mut::<Pkcs7>(data_dec);
 
     (iv, data)
