@@ -4,8 +4,8 @@ use rand::Rng;
 use sha2::Digest;
 
 use super::{
-    encrypt_aes256_hmac, hkdf_expand, EncString, KeyDecryptable, PbkdfSha256Hmac,
-    SymmetricCryptoKey, UserKey, PBKDF_SHA256_HMAC_OUT_SIZE,
+    hkdf_expand, EncString, KeyDecryptable, PbkdfSha256Hmac, SymmetricCryptoKey, UserKey,
+    PBKDF_SHA256_HMAC_OUT_SIZE,
 };
 use crate::{client::kdf::Kdf, error::Result, util::BASE64_ENGINE};
 
@@ -61,7 +61,7 @@ fn make_user_key(
     rng.fill(&mut user_key);
 
     let stretched_key = stretch_master_key(master_key)?;
-    let protected = encrypt_aes256_hmac(
+    let protected = EncString::encrypt_aes256_hmac(
         &user_key,
         stretched_key.mac_key.unwrap(),
         &stretched_key.key,
