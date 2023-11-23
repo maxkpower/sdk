@@ -186,7 +186,7 @@ mod tests {
         let key = generate_generic_array(0, 1);
 
         let rng = rand_chacha::ChaCha8Rng::from_seed([0u8; 32]);
-        let result = encrypt_aes256_internal(rng, "EncryptMe!".as_bytes(), key);
+        let result = encrypt_aes256_internal(rng, "EncryptMe!".as_bytes(), &key);
         assert_eq!(
             result,
             (
@@ -217,7 +217,7 @@ mod tests {
         let key = generate_generic_array(0, 1);
         let data = BASE64_ENGINE.decode("ByUF8vhyX4ddU9gcooznwA==").unwrap();
 
-        let decrypted = decrypt_aes256(iv, data, key).unwrap();
+        let decrypted = decrypt_aes256(iv, data, &key).unwrap();
 
         assert_eq!(String::from_utf8(decrypted).unwrap(), "EncryptMe!");
     }
@@ -227,8 +227,8 @@ mod tests {
         let key = generate_generic_array(0, 1);
         let data = "EncryptMe!";
 
-        let (iv, encrypted) = encrypt_aes256(data.as_bytes(), key);
-        let decrypted = decrypt_aes256(&iv, encrypted, key).unwrap();
+        let (iv, encrypted) = encrypt_aes256(data.as_bytes(), &key);
+        let decrypted = decrypt_aes256(&iv, encrypted, &key).unwrap();
 
         assert_eq!(String::from_utf8(decrypted).unwrap(), "EncryptMe!");
     }
