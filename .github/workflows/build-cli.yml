@@ -4,10 +4,6 @@ name: Build CLI
 on:
   pull_request:
   push:
-    branches:
-      - "main"
-      - "rc"
-      - "hotfix-rc"
   workflow_dispatch:
 
 defaults:
